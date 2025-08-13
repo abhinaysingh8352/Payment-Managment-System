@@ -1,4 +1,4 @@
-package org.zetaproject.model.entites;
+package org.zetaproject.dto;
 
 import org.zetaproject.model.enums.PaymentCategory;
 import org.zetaproject.model.enums.PaymentStatus;
@@ -7,7 +7,7 @@ import org.zetaproject.model.enums.PaymentType;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class Payment {
+public class PaymentResponse {
     private Long id;
     private BigDecimal amount;
     private PaymentType paymentType;
@@ -15,6 +15,16 @@ public class Payment {
     private PaymentStatus status;
     private LocalDateTime date;
     private Long createdBy;
+
+    public PaymentResponse(Long id, BigDecimal amount, PaymentType paymentType, PaymentCategory category, PaymentStatus status, LocalDateTime date, Long createdBy) {
+        this.id = id;
+        this.amount = amount;
+        this.paymentType = paymentType;
+        this.category = category;
+        this.status = status;
+        this.date = date;
+        this.createdBy = createdBy;
+    }
 
     // Getters and Setters
     public Long getId() { return id; }

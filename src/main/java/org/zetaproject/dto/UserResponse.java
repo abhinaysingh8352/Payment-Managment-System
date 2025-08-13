@@ -1,13 +1,19 @@
-package org.zetaproject.model.entites;
+package org.zetaproject.dto;
 
 import org.zetaproject.model.enums.UserRole;
 
-public class User {
+public class UserResponse {
     private Long id;
     private String name;
     private String email;
-    private String password; // Storing the password directly, but in a real app, it should be a hash
     private UserRole role;
+
+    public UserResponse(Long id, String name, String email, UserRole role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.role = role;
+    }
 
     // Getters and Setters
     public Long getId() { return id; }
@@ -16,8 +22,6 @@ public class User {
     public void setName(String name) { this.name = name; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
     public UserRole getRole() { return role; }
     public void setRole(UserRole role) { this.role = role; }
 }
