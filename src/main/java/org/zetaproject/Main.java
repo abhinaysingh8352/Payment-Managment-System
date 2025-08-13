@@ -20,7 +20,7 @@ public class Main {
     private static final ReportService reportService = new ReportService(new PaymentDaoImpl());
 
     public static void main(String[] args) {
-        System.out.println("Welcome to Payment Management System");
+        System.out.println("🎯 Welcome to Payment Management System");
 
         try {
             // Authentication Loop
@@ -40,7 +40,7 @@ public class Main {
                         System.exit(0);
                         break;
                     default:
-                        System.out.println("Invalid choice. Please try again.");
+                        System.out.println("❌ Invalid choice. Please try again.");
                 }
             }
 
@@ -67,12 +67,12 @@ public class Main {
                         handleLogout();
                         break;
                     default:
-                        System.out.println("Invalid choice. Please try again.");
+                        System.out.println("❌ Invalid choice. Please try again.");
                 }
             }
 
         } catch (Exception e) {
-            System.out.println("Fatal error: " + e.getMessage());
+            System.out.println("💥 Fatal error: " + e.getMessage());
             e.printStackTrace();
         } finally {
             scanner.close();
@@ -109,10 +109,10 @@ public class Main {
                 loggedInUser = user;
                 System.out.println("✅ Login successful! Welcome, " + loggedInUser.getUsername());
             } else {
-                System.out.println("Invalid username or password.");
+                System.out.println("❌ Invalid username or password.");
             }
         } catch (Exception e) {
-            System.out.println("Login error: " + e.getMessage());
+            System.out.println("❌ Login error: " + e.getMessage());
         }
     }
 
@@ -123,7 +123,7 @@ public class Main {
 
             User existingUser = userService.getUserByUsername(username);
             if (existingUser != null) {
-                System.out.println("Username already exists. Please choose a different username.");
+                System.out.println("❌ Username already exists. Please choose a different username.");
                 return;
             }
 
@@ -156,7 +156,7 @@ public class Main {
             System.out.println("✅ User created successfully! You can now login.");
 
         } catch (Exception e) {
-            System.out.println("User registration error: " + e.getMessage());
+            System.out.println("❌ User registration error: " + e.getMessage());
         }
     }
 
