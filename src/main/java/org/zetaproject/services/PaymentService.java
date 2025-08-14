@@ -1,62 +1,55 @@
 package org.zetaproject.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.zetaproject.dao.PaymentDao;
-import org.zetaproject.dao.AuditTrailDao;
+import org.zetaproject.dto.PaymentCreateRequest;
+import org.zetaproject.dto.PaymentUpdateRequest;
 import org.zetaproject.model.entites.Payment;
-import org.zetaproject.model.entites.AuditTrail;
-import org.zetaproject.model.enums.PaymentStatus;
-import org.zetaproject.exceptions.BusinessException;
-import org.zetaproject.exceptions.NotFoundException;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class PaymentService {
+
+    @Autowired
     private PaymentDao paymentDao;
-    private AuditTrailDao auditTrailDao;
 
-    public PaymentService(PaymentDao paymentDao, AuditTrailDao auditTrailDao) {
-        this.paymentDao = paymentDao;
-        this.auditTrailDao = auditTrailDao;
+    public Payment createPayment(PaymentCreateRequest request) {
+        Payment payment = new Payment();
+        payment.setAmount(request.getAmount());
+        payment.setPaymentType(request.getPaymentType());
+        payment.setCategory(request.getCategory());
+        payment.setStatus(request.getStatus());
+        payment.setDate(LocalDateTime.now());
+        // You'll need to get the user ID from the JWT token
+        payment.setCreatedBy(1L); // Example ID
+        paymentDao.create(payment);
+        return payment;
     }
 
-    public void addPayment(Payment payment) throws BusinessException, Exception {
-        if (payment.getAmount() <= 0)
-            throw new BusinessException("Amount must be positive.");
-        // More validations here...
-        payment.setCreatedAt(new Date());
-        payment.setUpdatedAt(new Date());
-        paymentDao.addPayment(payment);
-        logAudit("Add Payment", payment.getUserId(), payment.getId(), "Payment added.");
+    public List<Payment> getAllPayments() {
+        return paymentDao.findAll();
     }
 
-    public void updatePaymentStatus(int paymentId, PaymentStatus newStatus, int userId) throws Exception {
-        Payment payment = paymentDao.getPayment(paymentId);
-        if (payment == null)
-            throw new NotFoundException("Payment not found.");
-        paymentDao.updatePaymentStatus(paymentId, newStatus.name());
-        logAudit("Update Payment Status", userId, paymentId, "Status changed to: " + newStatus);
+    public Payment getPaymentById(Long id) {
+        return paymentDao.findById(id);
     }
 
-    public Payment getPayment(int paymentId) throws Exception {
-        return paymentDao.getPayment(paymentId);
+    public Payment updatePayment(Long id, PaymentUpdateRequest request) {
+        Payment payment = paymentDao.findById(id);
+        if (payment != null) {
+            payment.setAmount(request.getAmount());
+            payment.setPaymentType(request.getPaymentType());
+            payment.setCategory(request.getCategory());
+            payment.setStatus(request.getStatus());
+            paymentDao.update(payment);
+        }
+        return payment;
     }
 
-    public List<Payment> getAllPayments() throws Exception {
-        return paymentDao.getAllPayments();
-    }
-
-    public List<Payment> getPaymentsByUser(int userId) throws Exception {
-        return paymentDao.getPaymentsByUser(userId);
-    }
-
-    private void logAudit(String action, int userId, int paymentId, String details) throws Exception {
-        AuditTrail audit = new AuditTrail();
-        audit.setAction(action);
-        audit.setUserId(userId);
-        audit.setPaymentId(paymentId);
-        audit.setTimestamp(new Date());
-        audit.setDetails(details);
-        auditTrailDao.logAction(audit);
+    public void deletePayment(Long id) {
+        paymentDao.delete(id);
     }
 }

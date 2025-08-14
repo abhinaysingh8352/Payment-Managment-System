@@ -8,6 +8,14 @@
         <artifactId>Payment-Managment-System</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.4</version>
+        <relativePath/> </parent>
+
+    <groupId>org.example</groupId>
+    <artifactId>Payment-Managment-System</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
     <artifactId>pms-spring-boot-app</artifactId>
     <version>1.0-SNAPSHOT</version>

@@ -25,9 +25,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User createUser(User userJava) {
-        userJava.setPassword(passwordEncoder.encode(userJava.getPassword()));
-        return userDao.create(userJava);
+    public User createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userDao.create(user);
     }
 
     public List<User> getAllUsers() {
@@ -40,17 +40,17 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User userJava = userDao.findByEmail(email);
-        if (userJava == null) {
+        User user = userDao.findByEmail(email);
+        if (user == null) {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
 
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + userJava.getRole().name()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
 
         return new org.springframework.security.core.userdetails.User(
-                userJava.getEmail(),
-                userJava.getPassword(),
+                user.getEmail(),
+                user.getPassword(),
                 authorities
         );
     }

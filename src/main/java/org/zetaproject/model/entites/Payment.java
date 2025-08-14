@@ -1,63 +1,34 @@
 package org.zetaproject.model.entites;
 
-import org.zetaproject.model.enums.PaymentType;
 import org.zetaproject.model.enums.PaymentCategory;
 import org.zetaproject.model.enums.PaymentStatus;
+import org.zetaproject.model.enums.PaymentType;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class Payment {
-    private int id;
-    private double amount;
-    private PaymentType type;
+    private Long id;
+    private BigDecimal amount;
+    private PaymentType paymentType;
     private PaymentCategory category;
     private PaymentStatus status;
-    private Date createdAt;
-    private Date updatedAt;
-    private int userId;
-    private String remarks;
+    private LocalDateTime date;
+    private Long createdBy;
 
-    public Payment() {}
-
-    public Payment(int id, double amount, PaymentType type, PaymentCategory category,
-                   PaymentStatus status, Date createdAt, Date updatedAt, int userId, String remarks) {
-        this.id = id;
-        this.amount = amount;
-        this.type = type;
-        this.category = category;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.userId = userId;
-        this.remarks = remarks;
-    }
-
-    // Getters and setters
-
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-
-    public double getAmount() { return amount; }
-    public void setAmount(double amount) { this.amount = amount; }
-
-    public PaymentType getType() { return type; }
-    public void setType(PaymentType type) { this.type = type; }
-
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public BigDecimal getAmount() { return amount; }
+    public void setAmount(BigDecimal amount) { this.amount = amount; }
+    public PaymentType getPaymentType() { return paymentType; }
+    public void setPaymentType(PaymentType paymentType) { this.paymentType = paymentType; }
     public PaymentCategory getCategory() { return category; }
     public void setCategory(PaymentCategory category) { this.category = category; }
-
     public PaymentStatus getStatus() { return status; }
     public void setStatus(PaymentStatus status) { this.status = status; }
-
-    public Date getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
-
-    public Date getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
-
-    public int getUserId() { return userId; }
-    public void setUserId(int userId) { this.userId = userId; }
-
-    public String getRemarks() { return remarks; }
-    public void setRemarks(String remarks) { this.remarks = remarks; }
+    public LocalDateTime getDate() { return date; }
+    public void setDate(LocalDateTime date) { this.date = date; }
+    public Long getCreatedBy() { return createdBy; }
+    public void setCreatedBy(Long createdBy) { this.createdBy = createdBy; }
 }

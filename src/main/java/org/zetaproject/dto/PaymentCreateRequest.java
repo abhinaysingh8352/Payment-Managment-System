@@ -1,12 +1,12 @@
 package org.zetaproject.dto;
 
 import org.zetaproject.model.enums.PaymentCategory;
-import org.zetaproject.model.enums.PaymentStatus;
 import org.zetaproject.model.enums.PaymentType;
+import org.zetaproject.model.enums.PaymentStatus;
 
 import java.math.BigDecimal;
 
-public class PaymentUpdateRequest {
+public class PaymentCreateRequest {
     private BigDecimal amount;
     private PaymentType paymentType;
     private PaymentCategory category;

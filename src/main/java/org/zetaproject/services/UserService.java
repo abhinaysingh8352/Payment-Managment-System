@@ -1,24 +1,56 @@
 package org.zetaproject.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.zetaproject.dao.UserDao;
 import org.zetaproject.model.entites.User;
 
-public class UserService {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collection;
+
+@Service
+public class UserService implements UserDetailsService {
+
+    @Autowired
     private UserDao userDao;
 
-    public UserService(UserDao userDao) {
-        this.userDao = userDao;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public User createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userDao.create(user);
     }
 
-    public void addUser(User user) throws Exception {
-        userDao.addUser(user);
+    public List<User> getAllUsers() {
+        return userDao.findAll();
     }
 
-    public User getUserById(int id) throws Exception {
-        return userDao.getUserById(id);
+    public User findByEmail(String email) {
+        return userDao.findByEmail(email);
     }
 
-    public User getUserByUsername(String username) throws Exception {
-        return userDao.getUserByUsername(username);
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userDao.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with email: " + email);
+        }
+
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                authorities
+        );
     }
 }
