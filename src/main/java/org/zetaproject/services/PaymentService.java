@@ -1,8 +1,10 @@
 package org.zetaproject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.zetaproject.dao.PaymentDao;
+import org.zetaproject.dao.UserDao;
 import org.zetaproject.dto.PaymentCreateRequest;
 import org.zetaproject.dto.PaymentUpdateRequest;
 import org.zetaproject.model.entites.Payment;
@@ -16,6 +18,19 @@ public class PaymentService {
     @Autowired
     private PaymentDao paymentDao;
 
+    @Autowired
+    private UserDao userDao;
+
+    private Long extractUserIdFromContext() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();
+            var user = userDao.findByEmail(email);
+            return user != null ? user.getId() : null;
+        }
+        return null;
+    }
+
     public Payment createPayment(PaymentCreateRequest request) {
         Payment payment = new Payment();
         payment.setAmount(request.getAmount());
@@ -23,8 +38,8 @@ public class PaymentService {
         payment.setCategory(request.getCategory());
         payment.setStatus(request.getStatus());
         payment.setDate(LocalDateTime.now());
-        // You'll need to get the user ID from the JWT token
-        payment.setCreatedBy(1L); // Example ID
+        Long userId = extractUserIdFromContext();
+        payment.setCreatedBy(userId);
         paymentDao.create(payment);
         return payment;
     }
