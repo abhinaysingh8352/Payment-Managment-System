@@ -1,7 +1,10 @@
 package org.zetaproject.dto;
 
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.zetaproject.model.enums.UserRole;
 
+@AllArgsConstructor
 public class RegisterRequest {
     private String name;
     private String email;

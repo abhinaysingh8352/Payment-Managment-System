@@ -1,11 +1,13 @@
 package org.zetaproject.dto;
 
+import lombok.AllArgsConstructor;
 import org.zetaproject.model.enums.PaymentCategory;
 import org.zetaproject.model.enums.PaymentStatus;
 import org.zetaproject.model.enums.PaymentType;
 
 import java.math.BigDecimal;
 
+@AllArgsConstructor
 public class PaymentUpdateRequest {
     private BigDecimal amount;
     private PaymentType paymentType;
