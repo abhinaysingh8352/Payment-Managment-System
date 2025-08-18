@@ -18,8 +18,13 @@ public class PaymentDao {
     private JdbcTemplate jdbcTemplate;
 
     public void create(Payment payment) {
-        String sql = "INSERT INTO payments (amount, payment_type, category, status, date, created_by) VALUES (?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, payment.getAmount(), payment.getPaymentType().name(), payment.getCategory().name(), payment.getStatus().name(), Timestamp.valueOf(payment.getDate()), payment.getCreatedBy());
+        String sql = "INSERT INTO payments (amount, payment_type, category, status, date, created_by) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
+        Long generatedId = jdbcTemplate.queryForObject(
+                sql,
+                new Object[]{payment.getAmount(), payment.getPaymentType().name(), payment.getCategory().name(), payment.getStatus().name(), Timestamp.valueOf(payment.getDate()), payment.getCreatedBy()},
+                Long.class
+        );
+        payment.setId(generatedId);
     }
 
     public List<Payment> findAll() {
